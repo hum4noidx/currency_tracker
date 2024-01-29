@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    image: postgres:15-alpine
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGCLIENTENCODING: UTF8
+    ports:
+      - "5432:5432"
+    volumes:
+      - app-db-data:/var/lib/postgresql/data:cached
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "bot" ]
+
+  backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    build:
+      context: backend
+    command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+    volumes:
+        - ./backend:/app:delegated
+        - root-home:/root:delegated
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+
+volumes:
+  root-home:
+  app-db-data:
