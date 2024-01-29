@@ -1,9 +1,11 @@
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
 from app.api import api_router
 from app.core.config import settings
+from app.services.courses_updater import update_courses
 
 
 def create_app():
@@ -17,7 +19,20 @@ def create_app():
     )
     setup_routers(app)
     setup_cors_middleware(app)
+    scheduler = AsyncIOScheduler()
+    setup_jobs(scheduler)
+    scheduler.start()
     return app
+
+
+def setup_jobs(scheduler: AsyncIOScheduler) -> None:
+    scheduler.add_job(
+        update_courses,
+        trigger="interval",
+        seconds=5,
+        id="update_courses",
+        name="Update courses",
+    )
 
 
 def setup_routers(app: FastAPI) -> None:

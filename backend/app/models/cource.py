@@ -12,4 +12,4 @@ class Cource(Base):
     value: Mapped[float] = mapped_column(Float, nullable=False)
     exchange_id: Mapped[int] = mapped_column(ForeignKey("exchanger.id"), nullable=False)
 
-    exchanger = relationship("Exchanger", back_populates="cources")
+    exchanger = relationship("Exchanger", back_populates="courses")

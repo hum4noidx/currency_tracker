@@ -3,22 +3,22 @@ import logging
 from fastapi import APIRouter
 
 from app.deps.db import CurrentAsyncSession
-from app.repo.cources_repo import CourcesRepo
+from app.repo.courses_repo import CoursesRepo
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/cources",
-    tags=["cources"],
+    prefix="/courses",
+    tags=["courses"],
 )
 
 
 @router.get("/")
-async def get_cources(
+async def get_courses(
     session: CurrentAsyncSession,
     trade_pair: str = None,
     exchange: str = None,
 ):
-    cources_repo: CourcesRepo = CourcesRepo(session)
-    cources = await cources_repo.get_cources(trade_pair, exchange)
-    return cources
+    courses_repo: CoursesRepo = CoursesRepo(session)
+    courses = await courses_repo.get_courses(trade_pair, exchange)
+    return courses

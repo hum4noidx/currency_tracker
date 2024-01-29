@@ -19,7 +19,7 @@ services:
     container_name: ${BACKEND_CONTAINER_NAME}
     build:
       context: backend
-    command: uvicorn --port 8000 --host 0.0.0.0 --reload main:app
+    command: gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
     volumes:
         - ./backend:/app:delegated
         - root-home:/root:delegated

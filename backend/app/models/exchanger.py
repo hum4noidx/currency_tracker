@@ -10,4 +10,4 @@ class Exchanger(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    cources = relationship("Cource", back_populates="exchanger")
+    courses = relationship("Cource", back_populates="exchanger")
