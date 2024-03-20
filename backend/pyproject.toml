@@ -21,7 +21,7 @@ apscheduler = "^3.10.4"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.1.1"
+black = "^24.3.0"
 locust = "^2.21.0"
 
 [build-system]
